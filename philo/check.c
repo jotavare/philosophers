@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:02:33 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/16 04:27:51 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/17 19:37:38 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,53 +37,25 @@ void check_args(int ac, char** av)
     }
 }
 
-// print the stats struct
-void print_stats(t_st *stats)
+// check if the philosopher is dead
+void check_death(t_ph *ph)
 {
-    printf("\nNumber of philosophers: %d\n", stats->number_of_philos);
-    printf("Time to die: %d\n", stats->time_to_die);
-    printf("Time to eat: %d\n", stats->time_to_eat);
-    printf("Time to sleep: %d\n", stats->time_to_sleep);
-    if (stats->nb_of_times_philo_eats)
-        printf("Number of times each philosopher must eat: %d\n", stats->nb_of_times_philo_eats);
-}
-
-// print the philo struct
-void print_philo(t_ph *philo, t_st *stats)
-{
-    int i = 0;
-    while (i < stats->number_of_philos)
+    if (ph->time_left_to_die <= 0)
     {
-        printf("\nPhilosopher %d\n", philo[i].id);
-        printf("Left fork: %d\n", philo[i].left_fork);
-        printf("Right fork: %d\n", philo[i].right_fork);
-        printf("Time left to die: %d\n", philo[i].time_left_to_die);
-        i++;
+        printf("%ld %d died.", get_time(), ph->id);
+        exit(1);
     }
 }
 
-// assign the stats to the struct
-void assign_stats(t_st *st, char** av)
+// check if the philosopher has eaten enough
+void check_eat_enough(t_ph *ph)
 {
-    stats->number_of_philos = ft_atoi(av[1]);
-    stats->time_to_die = ft_atoi(av[2]);
-    stats->time_to_eat = ft_atoi(av[3]);
-    stats->time_to_sleep = ft_atoi(av[4]);
-    
-    if (av[5])
-        stats->nb_of_times_philo_eats = ft_atoi(av[5]);
-}
-
-// assign the stats to the philo struct
-void assign_philo(t_ph *philo, t_st *stats)
-{
-    int i = 0;
-    while (i < stats->number_of_philos)
+    if (ph->st->nb_of_times_philo_eats != -1)
     {
-        philo[i].id = i + 1;
-        philo[i].left_fork = i;
-        philo[i].right_fork = (i + 1) % stats->number_of_philos;
-        philo[i].time_left_to_die = stats->time_to_die;
-        i++;
+        if (ph->nb_of_times_philo_eats >= ph->st->nb_of_times_philo_eats)
+        {
+            printf("%ld %d has eaten enough.", get_time(), ph->id);
+            exit(1);
+        }
     }
 }

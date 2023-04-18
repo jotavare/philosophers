@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 18:45:14 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/17 19:37:45 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:10:36 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int main(int ac, char** av)
 {
-    // check if the arguments are valid
+    // check if the argumbatstraments are valid
     check_number_args(ac);
     check_args(ac, av);
 
@@ -35,7 +35,7 @@ int main(int ac, char** av)
         while (1)
         {
             printf("Philosopher %d is sleeping\n", ph->id);
-            usleep(get_time() + ph->st->time_to_die);
+            usleep(get_tmbatstraime() + ph->st->time_to_die);
         }
         return (NULL);
     }

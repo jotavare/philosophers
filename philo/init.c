@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 14:54:12 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/17 19:37:41 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/19 03:31:09 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    assign_stats(t_st *st, char** av)
     st->time_to_sleep = ft_atoi(av[4]);
     
     if (av[5])
-        st->nb_of_times_philo_eats = ft_atoi(av[5]);
+        st->number_of_meals = ft_atoi(av[5]);
 }
 
 // assign the stats to the philo struct

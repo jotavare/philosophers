@@ -6,21 +6,39 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 16:36:23 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/17 19:37:40 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/19 03:07:09 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// get the time
-long get_time(void)
+int	ft_exit(char *str)
 {
-    struct timeval  tv;
-    long            ms;
+	printf("Error : ");
+	printf(str);
+	return (0);
+}
 
-    gettimeofday(&tv, NULL);
-    ms = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
-    return (ms);
+long int	actual_time(void)
+{
+	long int			time;
+	struct timeval		current_time;
+
+	time = 0;
+	if (gettimeofday(&current_time, NULL) == -1)
+		ft_exit("Gettimeofday returned -1\n");
+	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	return (time);
+}
+
+void	ft_usleep(long int time_in_ms)
+{
+	long int	start_time;
+
+	start_time = 0;
+	start_time = actual_time();
+	while ((actual_time() - start_time) < time_in_ms)
+		usleep(time_in_ms / 10);
 }
 
 // libft functions
@@ -56,8 +74,8 @@ void print_stats(t_st *st)
     printf("Time to die: %d\n", st->time_to_die);
     printf("Time to eat: %d\n", st->time_to_eat);
     printf("Time to sleep: %d\n", st->time_to_sleep);
-    if (st->nb_of_times_philo_eats)
-        printf("Number of times each philosopher must eat: %d\n", st->nb_of_times_philo_eats);
+    if (st->number_of_meals)
+        printf("Number of times each philosopher must eat: %d\n", st->number_of_meals);
 }
 
 // print the philo struct
@@ -66,10 +84,18 @@ void print_philo(t_ph *ph, t_st *st)
     int i = 0;
     while (i < st->number_of_philos)
     {
-        printf("\n%ld Philosopher %d\n", get_time() ,ph[i].id);
+        printf("\n%ld Philosopher %d\n", actual_time() ,ph[i].id);
 		printf("Left fork: %d\n", ph[i].left_fork);
 		printf("Right fork: %d\n", ph[i].right_fork);
         printf("Time left to die: %d\n", ph[i].time_left_to_die);
         i++;
     }
+}
+
+//  print the status of the philosopher with a mutex
+void    print_status_mutex(t_ph *ph, char *status)
+{
+    pthread_mutex_lock(&ph->st->print_status);
+    printf("%ld Philosopher %d %s \n", actual_time(), ph->id, status);
+    pthread_mutex_unlock(&ph->st->print_status);
 }

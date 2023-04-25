@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 16:36:23 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/19 03:07:09 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:44:46 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	ft_exit(char *str)
 {
 	printf("Error : ");
-	printf(str);
+	printf("%s", str);
 	return (0);
 }
 
-long int	actual_time(void)
+long	actual_time(void)
 {
-	long int			time;
+	long			time;
 	struct timeval		current_time;
 
 	time = 0;

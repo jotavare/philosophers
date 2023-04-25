@@ -6,12 +6,12 @@
 #    By: jotavare <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/10 16:40:18 by jotavare          #+#    #+#              #
-#    Updated: 2023/04/15 21:28:26 by jotavare         ###   ########.fr        #
+#    Updated: 2023/04/17 16:54:49 by jotavare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # BASIC
-CC = cc -g
+CC = cc -g -pthread
 CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 GDB = gdb
@@ -36,6 +36,8 @@ BOLD			:= \033[1;1m
 NAME = philo.a
 SRCS =  check.c \
         utils.c \
+		init.c \
+		actions.c \
         philo.c
 
 OBJSDIR = objects

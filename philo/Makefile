@@ -5,72 +5,38 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jotavare <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/04/10 16:40:18 by jotavare          #+#    #+#              #
-#    Updated: 2023/04/17 16:54:49 by jotavare         ###   ########.fr        #
+#    Created: 2023/04/26 11:57:06 by jotavare          #+#    #+#              #
+#    Updated: 2023/04/27 10:48:39 by jotavare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# BASIC
-CC = cc -g -pthread
-CFLAGS = -Wall -Wextra -Werror -g
-RM = rm -rf
-GDB = gdb
+NAME		=	philo
 
-# TESTING
-VAL = valgrind --leak-check=full --track-origin=yes
-SANATIZE = -fsanitize=thread -g
-HELGRIND = valgrind --tool=helgrind
-DRD = valgrind --tool=drd
+HEADER		=	./include/
 
-# COLORS
-RESET			:= \033[0m
-GREEN			=	\e[32m
-CYAN			:= \33[1;36m
-YELLOW			=	\e[033m
-BLUE			=	\e[34m
-WHITE			=	\e[00m
-RED				:= \033[1;31m
-BOLD			:= \033[1;1m
+CC			=	gcc
 
-# PHILOSOPHERS
-NAME = philo.a
-SRCS =  check.c \
-        utils.c \
-		init.c \
-		actions.c \
-        philo.c
+CFLAGS		=	-Werror -Wall -Wextra -g -pthread -I $(HEADER)
 
-OBJSDIR = objects
-OBJS = $(addprefix $(OBJSDIR)/,$(SRCS:.c=.o))
+SRCS		=	sources/main.c \
+				sources/simulation.c \
+				sources/threads.c \
+				sources/init_and_parse.c \
+				sources/check.c \
+				sources/utilities.c \
+				sources/time.c \
 
-# MAKE RULES
-all: $(NAME) philo
+OBJS		=	$(SRCS:.c=.o)
 
-$(NAME): $(OBJS)
-	@echo "$(GREEN)$(BOLD)Creating objects directory...$(RESET)"
-	ar -rcs $(NAME) $(OBJS)
-	@echo "$(GREEN)$(BOLD)Objects created!$(RESET)"
-	
-$(OBJSDIR)/%.o: %.c
-	mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+all			:	$(NAME)
 
-philo: $(PHILO_OBJ) $(NAME)
-	@echo "$(GREEN)$(BOLD)Creating executable...$(RESET)"
-	$(CC) $(CFLAGS) $(PHILO_OBJ) $(NAME) -o philo
-	@echo "$(GREEN)$(BOLD)Executable created!$(RESET)"
+$(NAME)		:	$(OBJS) $(HEADER)
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-clean:
-	@echo "$(YELLOW)$(BOLD)Removing objects...$(RESET)"
-	$(RM) $(OBJSDIR)
-	@echo "$(YELLOW)$(BOLD)Objects removed!$(RESET)"
+clean		:
+				rm -rf $(OBJS)
 
-fclean: clean
-	@echo "$(RED)$(BOLD)Removing executable...$(RESET)"
-	$(RM) philo philo.a
-	@echo "$(RED)$(BOLD)Executable removed!$(RESET)"
+fclean		:	clean
+				rm -rf $(NAME)
 
-re: fclean all
-	@echo "$(GREEN)$(BOLD)Recompiled successfully!$(RESET)"
-
-.SILENT:
+re			:	fclean all

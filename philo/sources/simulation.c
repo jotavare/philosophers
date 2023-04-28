@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:57:45 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/27 10:37:18 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:28:59 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	simulation(t_philo *ph)
 	pthread_mutex_unlock(&ph->pa->write_mutex);
 	pthread_mutex_lock(&ph->pa->write_mutex);
 	print_status(PURPLE"is eating\n"CLEAR, ph);
-	pthread_mutex_lock(&ph->pa->time_eat);
+	pthread_mutex_lock(&ph->pa->time_eat_mutex);
 	ph->ms_eat = actual_time();
-	pthread_mutex_unlock(&ph->pa->time_eat);
+	pthread_mutex_unlock(&ph->pa->time_eat_mutex);
 	pthread_mutex_unlock(&ph->pa->write_mutex);
 	ft_usleep(ph->pa->time_to_eat);
 	pthread_mutex_unlock(ph->right_fork);

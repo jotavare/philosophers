@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:58:18 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/27 13:03:29 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:38:56 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_p		p;
 
-	if (!(parse_args(argc, argv, &p)))
+	if (!(args(argc, argv, &p)))
 		return (ft_exit("Invalid Arguments\n"));
 	p.ph = malloc(sizeof(t_philo) * p.a.philos);
 	if (!p.ph)
@@ -24,7 +24,6 @@ int	main(int argc, char **argv)
 	if (!initialize(&p) || !threading(&p))
 	{
 		free(p.ph);
-
 		return (0);
 	}
 	stop(&p);

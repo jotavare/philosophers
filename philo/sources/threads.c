@@ -6,7 +6,7 @@
 /*   By: jotavare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:22:35 by jotavare          #+#    #+#             */
-/*   Updated: 2023/04/27 12:37:13 by jotavare         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:59:35 by jotavare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,27 @@ void	*is_dead(void	*data)
 
 	ph = (t_philo *)data;
 	ft_usleep(ph->pa->time_to_die);
-	pthread_mutex_lock(&ph->pa->time_eat);
-	pthread_mutex_lock(&ph->pa->finish);
+	pthread_mutex_lock(&ph->pa->time_eat_mutex);
+	pthread_mutex_lock(&ph->pa->finish_mutex);
 	if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) \
 		>= (long)(ph->pa->time_to_die)))
 	{
-		pthread_mutex_unlock(&ph->pa->time_eat);
-		pthread_mutex_unlock(&ph->pa->finish);
+		pthread_mutex_unlock(&ph->pa->time_eat_mutex);
+		pthread_mutex_unlock(&ph->pa->finish_mutex);
 		pthread_mutex_lock(&ph->pa->write_mutex);
 		print_status(RED"died\n"CLEAR, ph);
 		pthread_mutex_unlock(&ph->pa->write_mutex);
 		check_death(ph, 1);
 	}
-	pthread_mutex_unlock(&ph->pa->time_eat);
-	pthread_mutex_unlock(&ph->pa->finish);
+	pthread_mutex_unlock(&ph->pa->time_eat_mutex);
+	pthread_mutex_unlock(&ph->pa->finish_mutex);
 	return (NULL);
 }
 
 /*
-	thread: This function is a thread function that simulates the behavior of a philosopher.
-	It creates a new thread to check whether the philosopher has died, and then performs the philosopher's actions.
+	Thread function that simulates the behavior of a philosopher.
+	It creates a new thread to check whether the philosopher has
+	died, and then performs the philosopher's actions.
 	Keeps track of how many times the philosopher has eaten.
 */
 
@@ -57,20 +58,19 @@ void	*thread(void *data)
 	{
 		pthread_create(&ph->thread_death_id, NULL, is_dead, data);
 		simulation(ph);
-		if ((int)++ph->nb_eat == ph->pa->meals)
+		if ((int)++ph->nb_philo_ate == ph->pa->meals)
 		{
-			pthread_mutex_lock(&ph->pa->finish);
+			pthread_mutex_lock(&ph->pa->finish_mutex);
 			ph->finish = 1;
 			ph->pa->number_philos_ate++;
 			if (ph->pa->number_philos_ate == ph->pa->philos)
 			{
-				pthread_mutex_unlock(&ph->pa->finish);
+				pthread_mutex_unlock(&ph->pa->finish_mutex);
 				check_death(ph, 2);
 			}
-			pthread_mutex_unlock(&ph->pa->finish);
+			pthread_mutex_unlock(&ph->pa->finish_mutex);
 			return (NULL);
 		}
-		
 	}
 	pthread_join(ph->thread_death_id, NULL);
 	return (NULL);

@@ -212,11 +212,13 @@ With fsanitize or valgrind there are less good performance of course
 | ./philo 4 310 200 200 | a philosophy dies |
 | ./philo 4 500 200 1.2 | invalid argument |
 | ./philo 4 0 200 200 | invalid argument
-| ./filo 4 -500 200 200 | invalid argument |
+| ./philo 4 -500 200 200 | invalid argument |
 | ./philo 4 500 200 2147483647 | a philo dies after 500 ms |
 | ./philo 4 2147483647 200 200 | nobody dies |
 | ./philo 4 214748364732 200 200 | invalid argument
 | ./philo 4 200 210 200 | a philo dies, it is necessary to display the death before 210 ms |
+| ./philo 5 800 200 150 |	nobody dies |
+| ./philo 3 610 200 80 | nobody dies |
  
  
  

@@ -22,6 +22,8 @@
 	<a href="#license">License</a>
 </p>
 
+copied need to edit
+
 ###  Launch:
 ```
 make && ./philo arg1 arg2 arg3 arg4 arg5

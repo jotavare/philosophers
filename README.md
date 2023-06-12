@@ -192,12 +192,12 @@ the philosophy is dead
 ```
  
  
-#  Step 4: Time management
+#### TIME MANAGEMENT
  
-| second | millisecond | microsecond |
-|---------|-------|-------|
-| 1 | 1000 | 1e+6 |
-| 0.001 | 1 | 1000 |
+| Second | Millisecond | Microsecond |
+| :-- | :-- | :-- |
+| 1     | 1000 | 1e+6 |
+| 0.001 | 1    | 1000 |
  
 - How gettimeofday works:
 ```
@@ -232,9 +232,8 @@ void ft_usleep(long int time_in_ms)
 }
 ````
  
-# Etape 5: Leaks, segfaults et data races
- 
-**Data race** :
+## Leaks, Segfaults and Data Races
+#### Data race
 two or more threads in a single process access the same memory location concurrently, and at least one of the accesses is for writing, and the threads are not using any exclusive locks to control their accesses to that memory.
 When these three conditions hold, the order of accesses is non-deterministic, and the computation may give different results from run to run depending on that order. Some data-races may be benign (for example, when the memory access is used for a busy-wait), but many data-races are bugs in the program.
  
@@ -247,25 +246,45 @@ To fix data races: **-g fsanitize=thread**
  
  
  
-## TESTS
- 
-With fsanitize or valgrind there are less good performance of course
+## EXAMPLES
+ > The performance will change if you use `-fsanitize`, `valgrind` or both togheter.
  
 | Example | Expected Result |
-| :--: | :--: |
-| ./philo 1 200 200 200           | philo 1 only takes a fork and dies after 200 ms                  |
-| ./philo 2 800 200 200           | nobody dies                                                      |
-| ./philo 5 800 200 200           | nobody dies                                                      |
-| ./philo 5 800 200 200 7         | the simulation stops when each philo has eaten 7 times           |
-| ./philo 4 410 200 200           | nobody dies                                                      |
-| ./philo 4 310 200 200           | a philosophy dies                                                |
-| ./philo 4 500 200 1.2           | invalid argument                                                 |
-| ./philo 4 0 200 200             | invalid argument                                                 |
-| ./philo 4 -500 200 200          | invalid argument                                                 |
-| ./philo 4 500 200 2147483647    | a philo dies after 500 ms                                        |
-| ./philo 4 2147483647 200 200    | nobody dies                                                      |
-| ./philo 4 214748364732 200 200  | invalid argument                                                 |
-| ./philo 4 200 210 200           | a philo dies, it is necessary to display the death before 210 ms |
-| ./philo 5 800 200 150           | nobody dies                                                      |
-| ./philo 3 610 200 80            | nobody dies                                                      |
+| :-- | :-- |
+| ./philo 1 200 200 200           | Philosopher 1 takes a fork and dies after 200 ms.              |
+| ./philo 2 800 200 200           | No philosopher dies.                                           |
+| ./philo 5 800 200 200           | No philosopher dies.                                           |
+| ./philo 5 800 200 200 7         | The program stops when each philosopher has eaten 7 times.     |
+| ./philo 4 410 200 200           | No philosopher dies.                                           |
+| ./philo 4 310 200 200           | A philosopher dies.                                            |
+| ./philo 4 500 200 1.2           | Invalid argument.                                              |
+| ./philo 4 0 200 200             | Invalid argument.                                              |
+| ./philo 4 -500 200 200          | Invalid argument.                                              |
+| ./philo 4 500 200 2147483647    | A philosopher dies after 500 ms                                |
+| ./philo 4 2147483647 200 200    | No philosopher dies.                                           |
+| ./philo 4 214748364732 200 200  | Invalid argument.                                              |
+| ./philo 4 200 210 200           | A philosopher dies, it should display the death before 210 ms. |
+| ./philo 5 800 200 150           | No philosopher dies.                                           |
+| ./philo 3 610 200 80            | No philosopher dies.                                           |
  
+## NORMINETTE
+At 42 School, it is expected that almost every project is written in accordance with the Norm, which is the coding standard of the school.
+
+```
+- No for, do...while, switch, case, goto, ternary operators and variable lenght arrays are allowed
+- Each function must be maximum 25 lines, not counting the function's own curly brackets
+- Each line must be at most 80 columns wide, comments included
+- A function can take 4 named parameters maximum
+- No assigns and declarations in the same line (unless static)
+- You can't declare more than 5 variables per function
+- ...
+```
+
+* [42 Norms](https://github.com/jotavare/jotavare/blob/main/42/pdf/en_norm.pdf) - Information about 42 code norms. `PDF`
+* [Norminette](https://github.com/42School/norminette) - Tool by 42, to respect the code norm. `GitHub`
+* [42 Header](https://github.com/42Paris/42header) - 42 header for vim. `GitHub`
+
+## LICENSE
+<p>
+This work is published under the terms of <a href="https://github.com/jotavare/jotavare/blob/main/LICENSE">42 Unlicense</a>.
+</p>

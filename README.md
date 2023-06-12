@@ -183,7 +183,7 @@ void ft_usleep(long int time_in_ms)
 }
 ````
  
-## Data Races
+#### Data Races
 
 A **data race** occurs when two or more **threads** within a single process concurrently access the same memory location, with at least one of the accesses being a write operation, and no exclusive locks are used to control the accesses. **Data races** can lead to non-deterministic order of accesses and produce different results from run to run. While some **data races** may be harmless, many are bugs in the program.
 

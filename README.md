@@ -28,7 +28,7 @@ The philosophers follow a rhythm of alternating between deep contemplation and e
 
 The challenge lies in designing a behavioral framework, or a concurrent algorithm, that ensures no philosopher will go hungry. This means establishing a system where they can perpetually alternate between eating and thinking, all while acknowledging the unpredictable nature of when their fellow philosophers will desire to eat or engage in contemplation.
 
-For further exploration of this problem, you can consult the <a href="https://github.com/jotavare/libft/blob/master/subject/en_subject_libft.pdf">Wikipedia</a> article.
+For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
 
 <a href="https://github.com/jotavare/philosophers/blob/master/subject/en_subject_philosophers.pdf">Click here</a> for the subject of this project.
 

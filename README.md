@@ -17,27 +17,50 @@
 	<a href="#how-to-use">How to use</a> •
 	<a href="#mandatory">Mandatory</a> •
 	<a href="#bonus">Bonus</a> •
-	<a href="#disclaimer">Disclaimer</a> •
-	<a href="#testers">Testers</a> •
+	<a href="#norminette">Norminette</a> •
 	<a href="#license">License</a>
 </p>
 
-copied need to edit
+## ABOUT
+In a house, five philosophers reside and gather around a shared dining table. Each philosopher has a designated place at the table where they dine. Their primary concern, apart from their philosophical pursuits, revolves around a particular dish of spaghetti that requires the use of two forks. There is a fork placed between each plate on the table.
 
-###  Launch:
+The philosophers follow a rhythm of alternating between deep contemplation and enjoying their meal. However, they face a condition before they can commence eating: they must have both a left and right fork at their disposal. The availability of two forks is contingent upon their adjacent neighbors being engaged in contemplation rather than dining. Once a philosopher finishes their meal, they will set down both forks.
+
+The challenge lies in designing a behavioral framework, or a concurrent algorithm, that ensures no philosopher will go hungry. This means establishing a system where they can perpetually alternate between eating and thinking, all while acknowledging the unpredictable nature of when their fellow philosophers will desire to eat or engage in contemplation.
+
+For further exploration of this problem, you can consult the <a href="https://github.com/jotavare/libft/blob/master/subject/en_subject_libft.pdf">Wikipedia</a> article.
+
+<a href="https://github.com/jotavare/philosophers/blob/master/subject/en_subject_philosophers.pdf">Click here</a> for the subject of this project.
+
+## HOW TO USE
+#### COMPILATION
+#### 1º - Clone the repository
+```bash
+git clone git@github.com:jotavare/philosophers.git
 ```
-make && ./philo arg1 arg2 arg3 arg4 arg5
+
+#### 2º - Enter the project folder and run `make`
+```bash
+cd philosophers/philosophers
+make
 ```
- 
-### Plan :
-- Step 1 - Understand the subject well
-- Step 2 - Getting familiar with threads and mutexes
-- Step 3 - Strategy
-- Step 4 - Time management
-- Etape 5 - Leaks, segfaults et data races
-- Etape 6 - Tests
-- Usefulness of variables in my parallel g prog structure and culture
- 
+
+#### 3º - Launch the program
+> The last argument is optional for the execution of the program.
+```bash
+./philo [n of philos] [time to die] [time to eat] [time to sleep] [n times each philo must eat]
+```
+
+#### MAKEFILE RULES
+
+`make` or `make all` - Compile philosophers **mandatory** files.
+
+`make clean` - Delete all .o (object files) files.
+
+`make fclean` - Delete all .o (object file) and .a (executable) files.
+
+`make re` - Use rules `fclean` + `all`.
+
 #  Step 1: Understand the subject well
 Objective: not to kill philosophers
  

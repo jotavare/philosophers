@@ -71,7 +71,7 @@ make
 - [x] Write each change of the philosopher status.
  
 ## BONUS
-> The bonus program takes the same arguments and it as to comply with the rules.
+> The bonus program takes the same arguments and it as to comply with the mandatory rules.
 
 - [ ] All the forks are put in the middle of the table.
 - [ ] They have no states in memory but the number of avaialable forks is represented by a semaphore.

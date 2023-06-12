@@ -217,89 +217,32 @@ When these three conditions hold, the order of accesses is non-deterministic, an
  
 To fix data races: **-g fsanitize=thread**
  
-Message in the discord: " **valgrind --tool=helgrind** or **valgrind --tool=drd** : if these return warnings or errors, it means that a mutex is missing, or that it is misused. You have to check manually, but often it is a sign that the project is not good, even if it seems to work."
+**valgrind --tool=helgrind** or **valgrind --tool=drd** : if these return warnings or errors, it means that a mutex is missing, or that it is misused. You have to check manually, but often it is a sign that the project is not good, even if it seems to work."
  
 - detached: as soon as the thread ends its memory is clean. Be careful that the main does not end before we are finished the thread
 - reachable: does not destroy his memory when he has finished. pthread_join blocks until the thread is finished
  
  
  
-# Etape 6: Tests
+## TESTS
  
 With fsanitize or valgrind there are less good performance of course
  
-| testing | expected result |
-|----------|-------|
-| ./philo 1 200 200 200 | philo 1 only takes a fork and dies after 200 ms |
-| ./philo 2 800 200 200 | nobody dies |
-| ./philo 5 800 200 200 | nobody dies |
-| ./philo 5 800 200 200 7 | the simulation stops when each philo has eaten 7 times|
-| ./philo 4 410 200 200 | nobody dies |
-| ./philo 4 310 200 200 | a philosophy dies |
-| ./philo 4 500 200 1.2 | invalid argument |
-| ./philo 4 0 200 200 | invalid argument
-| ./philo 4 -500 200 200 | invalid argument |
-| ./philo 4 500 200 2147483647 | a philo dies after 500 ms |
-| ./philo 4 2147483647 200 200 | nobody dies |
-| ./philo 4 214748364732 200 200 | invalid argument
-| ./philo 4 200 210 200 | a philo dies, it is necessary to display the death before 210 ms |
-| ./philo 5 800 200 150 |	nobody dies |
-| ./philo 3 610 200 80 | nobody dies |
+| Example | Expected Result |
+| :--: | :--: |
+| ./philo 1 200 200 200           | philo 1 only takes a fork and dies after 200 ms                  |
+| ./philo 2 800 200 200           | nobody dies                                                      |
+| ./philo 5 800 200 200           | nobody dies                                                      |
+| ./philo 5 800 200 200 7         | the simulation stops when each philo has eaten 7 times           |
+| ./philo 4 410 200 200           | nobody dies                                                      |
+| ./philo 4 310 200 200           | a philosophy dies                                                |
+| ./philo 4 500 200 1.2           | invalid argument                                                 |
+| ./philo 4 0 200 200             | invalid argument                                                 |
+| ./philo 4 -500 200 200          | invalid argument                                                 |
+| ./philo 4 500 200 2147483647    | a philo dies after 500 ms                                        |
+| ./philo 4 2147483647 200 200    | nobody dies                                                      |
+| ./philo 4 214748364732 200 200  | invalid argument                                                 |
+| ./philo 4 200 210 200           | a philo dies, it is necessary to display the death before 210 ms |
+| ./philo 5 800 200 150           | nobody dies                                                      |
+| ./philo 3 610 200 80            | nobody dies                                                      |
  
- 
- 
-#  Usefulness of variables in my parallel g prog structure and culture
- 
- 
-**Sequential programming** (or linear) vs **parallel programming** :
-When you program you are doing so-called linear programming. This technique consists in executing the instructions one after the other in order to obtain the desired result. When at least two actions take place in parallel, we speak of a parallel algorithm.
- 
-**Architectures:**
-- Computing clusters (OCCIGEN (computer developed by atos), Turing (raspberry pi clusters), Muse): (= cluster of servers, cluster, computing farm, computer cluster) to designate techniques consisting of grouping together several independent computers called nodes, in order to allow a global management and to exceed the limitations of a computer. A group of servers but seen from the outside as a single server. The cluster meets the need for increasing application processing demands, a strong demand for high application availability. Ex: the active/passive cluster makes it possible to duplicate a server with a second similar server in the event of a breakdown. Allows to distribute the load between the servers.
-- Computer grids (France Grid): network of computer resources that transmit data to each other.
-- Hardware accelerators (XeonPhi, GPU): Hardware acceleration consists of entrusting a specific function performed by the processor to a dedicated integrated circuit (= an electronic chip) which will perform this function more efficiently. For a long time, the calculations performed by consumer computers were entirely taken care of by the central processing unit (CPU). However, this processor proved insufficient in a number of areas. One had the idea to create circuits more effective than the processor for these tasks in order to discharge it.
-- vectorial machines: A vectorial processor is a processor having various architectural functionalities allowing it to improve the execution of programs using massively arrays, matrices, and which makes it possible to benefit from the parallelism inherent in the use of the latter.
-- Multi-cores
- 
-**Parallelization methods:**
-- Distributed computing
-- Computing in shared memory (Multithread): aims to increase the use of a single core by taking advantage of the properties of threads and parallelism at the instruction level. Unlike processes, threads share the memory of the process that contains them, making context switches inexpensive. A thread is therefore a thread of execution, a task that the processor must execute. A core can only execute one thread at a time. So if a processor has two cores, two threads (two tasks) can be executed simultaneously and so on.
-- Computing in distributed memory (MPI = Multiprocessing)
- 
-**Classic Parallel Programming Mistakes**
-- data race
-- synchronization fault
-- data inconsistency
- 
- 
-```
- typedef struct s_arg //arguments after ./philo
-{
- int total; // number of philosophers
- int die; // time to die in milliseconds
- int eat; // time to eat in milliseconds
- int sleep; // time to sleep in milliseconds
- int m_eat; // must eat m_eat times
- long int start_t; // start time in milliseconds
- pthread_mutex_t write_mutex; // write mutex
- int nb_p_finish; // when a philosopher ate m_eat times : nb_p_finish++
- int stop; // 0 if none philosopher is dead, 1 if a philosopher is dead, 2 if all philosophers ate m_eat times
-} t_arg;
-typedef struct s_philo
-{
- int id; // id of the philosopher
- pthread_t thread_id; // thread id
- pthread_t thread_death_id; // id of the thread monitoring death
- pthread_mutex_t *r_f; // right fork mutex
- pthread_mutex_t l_f; // left fork mutex
- t_arg *pa; // pointer to structure with all arguments (pointer on a)
- long int ms_eat; // time of the last dinner in milliseconds
- unsigned int nb_eat; // number of dinners (each time the philosopher eats nb_eat++)
- int finish; // 1 when a philosopher ate m_eat times, if not, 0
-} t_philo;
-typedef struct s_p
-{
- t_philo *ph; // structure for each philosopher
- t_arg a; // structure with arguments, same for all philosophers
-}
-```

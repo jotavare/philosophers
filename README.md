@@ -83,11 +83,13 @@ make
 ./philo [arg1] [arg2] [arg3] [arg4] [arg5]
 ``` 
 
-* [arg1] = number_of_philosophers (number of philosophers and number of forks)
-* [arg2] = time_to_die (if he hasn't eaten for time_to_die milliseconds he dies)
-* [arg3] = time_to_eat (time to eat with two forks in milliseconds)
-* [arg4] = time_to_sleep (time to sleep in milliseconds)
-* [arg5] = number_of_times_each_philosopher_must_eat (number of times each philosopher must eat, optional argument)
+| Arg | Function | Description |
+| :- | :- | :- |
+| [arg1] | number_of_philosophers                    | Number of philosophers and number of forks.              |
+| [arg2] | time_to_die                               | If he hasn't eaten for time_to_die milliseconds he dies. |
+| [arg3] | time_to_eat                               | Time to eat with two forks in milliseconds.              |
+| [arg4] | time_to_sleep                             | Time to sleep in milliseconds.                           |
+| [arg5] | number_of_times_each_philosopher_must_eat | Number of times each philosopher must eat.               |
 
 #  Step 2: Getting familiar with threads and mutexes
  

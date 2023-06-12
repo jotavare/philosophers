@@ -17,7 +17,7 @@
 	<a href="#how-to-use">How to use</a> •
 	<a href="#mandatory">Mandatory</a> •
 	<a href="#bonus">Bonus</a> •
-	<a href="#bonus">Tips</a> •
+	<a href="#tips">Tips</a> •
 	<a href="#norminette">Norminette</a> •
 	<a href="#license">License</a>
 </p>

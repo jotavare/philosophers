@@ -33,7 +33,7 @@ For further exploration of this problem, you can consult the <a href="https://en
 <a href="https://github.com/jotavare/philosophers/blob/master/subject/en_subject_philosophers.pdf">Click here</a> for the subject of this project.
 
 ## HOW TO USE
-#### COMPILATION
+#### COMPILATION AND EXECUTION
 #### 1º - Clone the repository
 ```bash
 git clone git@github.com:jotavare/philosophers.git

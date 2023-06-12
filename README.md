@@ -61,29 +61,34 @@ make
 
 `make re` - Use rules `fclean` + `all`.
 
-#  Step 1: Understand the subject well
-Objective: not to kill philosophers
+## MANDATORY
+> Objective: can't kill the philosophers.
  
-- each philosopher is a **thread** , and each fork is a **mutex**
-- they do in order: eat - sleep - think (they don't really think, they wait to have their forks to eat)
-- to eat they must have two forks, knowing that there is only one fork per philosopher
-- if one of them dies, the simulation stops and death must be displayed in a maximum of 10 milliseconds
-- write each change of philosopher status
+- [x] Each philosopher is a **thread** and each fork is a **mutex**.
+- [x] They do it in order: `eat` -> `sleep` -> `think` (they don't really think, they wait to have their forks to eat).
+- [x] To eat they must have two forks, knowing that there is only one fork per philosopher.
+- [x] If one of them dies, the simulation stops and death must be displayed in a maximum of 10 milliseconds.
+- [x] Write each change of the philosopher status.
  
-./philo arg1 arg2 arg3 arg4 arg5
- 
-- arg1 = number_of_philosophers (number of philosophers and number of forks)
-- arg2 = time_to_die (if he hasn't eaten for time_to_die milliseconds he dies)
-- arg3 = time_to_eat (time to eat with two forks in milliseconds)
-- arg4 = time_to_sleep (time to sleep in milliseconds)
-- arg5 = number_of_times_each_philosopher_must_eat (number of times each philosopher must eat, arg optional)
- 
- 
-Philo (=philo_one) : threads et mutexs.
- 
-Philo_bonus (=philo_three) : processes and semaphores.
- 
- 
+## BONUS
+> The bonus program takes the same arguments and it as to comply with the rules.
+
+- [x] All the forks are put in the middle of the table.
+- [x] They have no states in memory but the number of avaialable forks is represented by a semaphore.
+- [x] Each philosopher should be a process. But the main process should not be a philosopher.
+
+## UNDERSTANDING THE SUBJECT
+
+```bash
+./philo [arg1] [arg2] [arg3] [arg4] [arg5]
+``` 
+
+* [arg1] = number_of_philosophers (number of philosophers and number of forks)
+* [arg2] = time_to_die (if he hasn't eaten for time_to_die milliseconds he dies)
+* [arg3] = time_to_eat (time to eat with two forks in milliseconds)
+* [arg4] = time_to_sleep (time to sleep in milliseconds)
+* [arg5] = number_of_times_each_philosopher_must_eat (number of times each philosopher must eat, optional argument)
+
 #  Step 2: Getting familiar with threads and mutexes
  
 Thread: There is always at least one thread per process. But we can create more, and each thread includes these unique elements and its elements shared with all the other threads of the same process (code section, data section, operating-system resources like open files and signals)...

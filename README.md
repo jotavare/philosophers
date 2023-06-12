@@ -77,7 +77,8 @@ make
 - [ ] They have no states in memory but the number of avaialable forks is represented by a semaphore.
 - [ ] Each philosopher should be a process. But the main process should not be a philosopher.
 
-## UNDERSTANDING THE SUBJECT
+## TIPS
+#### UNDERSTANDING THE SUBJECT
 
 ```bash
 ./philo [arg1] [arg2] [arg3] [arg4] [arg5]
@@ -91,129 +92,71 @@ make
 | [arg4] | time_to_sleep                             | Time to sleep in milliseconds.                           |
 | [arg5] | number_of_times_each_philosopher_must_eat | Number of times each philosopher must eat. (Optional)    |
 
-#  Step 2: Getting familiar with threads and mutexes
+##### THREADS AND MUTEXES
  
-Thread: There is always at least one thread per process. But we can create more, and each thread includes these unique elements and its elements shared with all the other threads of the same process (code section, data section, operating-system resources like open files and signals)...
- 
-The libraries that allow to manage threads: pthread and openmp
- 
-```
-pthread_create(&p->ph[i].thread_id, NULL, thread, &p->ph[i]); //pour creer un thread avec pthread
-```
- 
-But if two threads of the same process want to access the same shared memory variable at the same time, it creates undefined behaviors (see data races below). Hence the use of mutexes. Mutexes block a piece of code, and other threads have to wait to execute that piece of code. Like a toilet key, each in turn.
- 
-Example here if we remove the mutexes str printed by thread 1 is overlapped by str printed by thread 2 and it will be "treatdr e1a d: 1c o:u ccoouu ccoau cvaa v?a":
- 
-```
-#include <pthread.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-//pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-typedef struct s_p
-{
- pthread_mutex_t mutex;
- int i;
-} t_p;
-int ft_strlen(char *str)
-{
- int i = 0;
- while (str[i])
- i++;
- return (i);
-}
-void *go1(void *pp)
-{
- char *str;
-int i = 0;
- t_p *ppp;
- ppp = (t_p *)pp;
- str = "tread 1 : coucou ca va ? \n";
- pthread_mutex_lock(&ppp->mutex); // si on enleve ici
-while (str[i])
-{
- write(1, &str[i], 1);
-i++;
-}
- pthread_mutex_unlock(&ppp->mutex); // si on enleve ici
- return (NULL);
-}
-int main()
-{
- pthread_t thread_id1;
- pthread_t thread_id2;
- t_p p;
-t_p *pp;
- pp = (malloc(sizeof(t_p) * 1));
-pp = &p;
- p.i = 3;
- pthread_mutex_init(&p.mutex, NULL); // obligatoire de init le mutex
- pthread_create(&thread_id1, NULL, go1, (void *)pp);
- pthread_create(&thread_id2, NULL, go1, (void *)pp);
- sleep(1);
-}
-```
- 
-SO :
-- Each fork has its own mutex which allows it to be locked when a philosopher takes it.
-- We also use a mutex shared by all the philosophers which allows to print text without mixing as in the example above.
- 
- 
-[ Tuto video que j'ai utilise pour commencer ](https://www.youtube.com/watch?v=o_GbRujGCnM&t=377s)
- 
- 
-#  Step 3: Strategy
- 
-- Make even or odd philosophies leave with a delay. Because if all the philosophers start at the same time and take their right fork, no one will be able to eat.
-```
+A thread is a unit of execution within a process. Each process has at least one thread, but additional threads can be created. A thread consists of unique elements and shared elements with other threads of the same process, such as the code section, data section, and operating system resources like open files and signals.
+
+However, if two threads of the same process try to access the same shared memory variable simultaneously, it can lead to undefined behaviors, known as data races. To prevent this, mutexes are used. Mutexes block a piece of code, allowing only one thread at a time to execute that piece of code, similar to how a toilet key is used.
+
+In the context of the given example:
+* Each fork has its own mutex, which can be locked when a philosopher takes it.
+* There is also a mutex shared by all the philosophers, ensuring that text is printed without mixing, as shown in the above example.
+
+#### STRATEGY
+To prevent conflicts and ensure proper execution, the following strategies are employed:
+
+* Make even or odd philosophers start with a delay. If all philosophers start at the same time and take their right fork, none of them will be able to eat.
+
+```c
  if (ph->id % 2 == 0)
  ft_usleep(ph->pa->eat / 10);
 ```
  
-- Each philosopher has his own fork on the left (l_f) and borrows that of his neighbor on the right thanks to the pointer ( \* r_f) which points to the l_f of the neighbor on the right:
+* Each philosopher has their own fork on the left (left_fork) and borrows the fork from their right neighbor using a pointer (\*right_fork) that points to the left fork of the neighbor on the right.
  
-```
+```c
 while (i < p->a.total)
 {
  p->ph[i].id = i + 1;
-pthread_mutex_init(&p->ph[i].l_f, NULL); // each philosopher holds his own fork on the left
+pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their own fork on the left
  if (i == p->a.total - 1)
-p->ph[i].r_f = &p->ph[0].l_f; // and borrows that of its right neighbor
+p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbor if the philosopher is the last one
  else
-p->ph[i].r_f = &p->ph[i + 1].l_f; // and borrows that of its right neighbor
+p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
  i++;
 }
 ```
  
-- Obliged to check the death in a side thread otherwise do not realize in time if there is one who dies. But on the other hand if the thread check continues if the philosophy is dead it lowers the performance too much. So each time a philo goes to do his activities, a thread that checks for death is launched. And this thread will usleep(time_to_die) and then check if the philosophy is dead.
+* Death checking is performed in a separate thread to ensure timely detection. If the main thread continuously checks for death, it can significantly impact performance. So, when a philosopher performs their activities, a separate thread is launched to check if any philosopher has died. This thread sleeps for the duration specified by time_to_die and then checks if the philosopher is still alive.
  
 ```
 pthread_create(&ph->thread_death_id, NULL, is_dead, data);
 void *is_dead(void *data)
 {
- ft_usleep(ph->pa->die + 1);
- if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) \
- >= (long)(ph->pa->die)))
-the philosophy is dead
+  ft_usleep(ph->pa->die + 1);
+  if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) >= (long)(ph->pa->die)))
+  {
+    // The philosopher is dead
+  }
+}
 ```
  
- 
 #### TIME MANAGEMENT
+Time can be managed using the following conversions:
  
 | Second | Millisecond | Microsecond |
 | :-- | :-- | :-- |
 | 1     | 1000 | 1e+6 |
 | 0.001 | 1    | 1000 |
  
-- How gettimeofday works:
+* The gettimeofday function is used to get the current time, which is stored in a timeval structure. The following example demonstrates how gettimeofday works:
 ```
  struct timeval current_time;
  gettimeofday(&current_time, NULL);
  printf("seconds : %ld\nmicro seconds : %d", current_time.tv_sec, current_time.tv_usec);
 ```
  
-- To know the current time in milliseconds with gettimeofday:
+* To get the current time in milliseconds using gettimeofday, the following function can be used:
 ```
 long int actual_time(void)
 {
@@ -227,7 +170,7 @@ struct timeval current_time;
 }
 ```
  
-- create your own function ft_usleep because the real function waits at least the time indicated to it, so not precise
+* A custom ft_usleep function is created to provide more precise control over the sleep time compared to the actual usleep function, which waits at least the specified time. The custom function repeatedly checks the time difference until the desired time has passed.
 ```
 void ft_usleep(long int time_in_ms)
 {
@@ -239,19 +182,16 @@ void ft_usleep(long int time_in_ms)
 }
 ````
  
-## Leaks, Segfaults and Data Races
-#### Data race
-two or more threads in a single process access the same memory location concurrently, and at least one of the accesses is for writing, and the threads are not using any exclusive locks to control their accesses to that memory.
-When these three conditions hold, the order of accesses is non-deterministic, and the computation may give different results from run to run depending on that order. Some data-races may be benign (for example, when the memory access is used for a busy-wait), but many data-races are bugs in the program.
- 
-To fix data races: **-g fsanitize=thread**
- 
-**valgrind --tool=helgrind** or **valgrind --tool=drd** : if these return warnings or errors, it means that a mutex is missing, or that it is misused. You have to check manually, but often it is a sign that the project is not good, even if it seems to work."
- 
-- detached: as soon as the thread ends its memory is clean. Be careful that the main does not end before we are finished the thread
-- reachable: does not destroy his memory when he has finished. pthread_join blocks until the thread is finished
- 
- 
+## Data Races
+
+A data race occurs when two or more threads within a single process concurrently access the same memory location, with at least one of the accesses being a write operation, and no exclusive locks are used to control the accesses. Data races can lead to non-deterministic order of accesses and produce different results from run to run. While some data races may be harmless (e.g., when used for busy-waiting), many are bugs in the program.
+
+To fix data races, the option `-g fsanitize=thread` can be used.
+
+The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to detect any missing or misused mutexes. Warnings or errors from these tools indicate potential issues that should be manually checked. Such issues are often signs of a problematic project, even if it appears to be working.
+
+* `detached` refers to a thread that cleans its memory as soon as it finishes. It is essential to ensure that the main thread does not terminate before the detached thread completes its execution.
+* `reachable` refers to a thread that does not destroy its memory when it finishes. The pthread_join function can be used to block the execution until the thread finishes.
  
 ## EXAMPLES
  > The performance will change if you use `-fsanitize`, `valgrind` or both togheter.

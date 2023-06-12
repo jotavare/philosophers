@@ -26,9 +26,9 @@
 ## ABOUT
 In a house, five philosophers reside and gather around a shared dining table. Each philosopher has a designated place at the table where they dine. Their primary concern, apart from their philosophical pursuits, revolves around a particular dish of spaghetti that requires the use of two forks. There is a fork placed between each plate on the table.
 
-The philosophers follow a rhythm of alternating between deep contemplation and enjoying their meal. However, they face a condition before they can commence eating: they must have both a left and right fork at their disposal. The availability of two forks is contingent upon their adjacent neighbors being engaged in contemplation rather than dining. Once a philosopher finishes their meal, they will set down both forks.
+The philosophers follow a rhythm of alternating between deep contemplation and enjoying their meal. However, they face a condition before they can commence eating: they must have both a left and right fork at their disposal. The availability of two forks is contingent upon their adjacent neighbours being engaged in contemplation rather than dining. Once a philosopher finishes their meal, they will set down both forks.
 
-The challenge lies in designing a behavioral framework, or a concurrent algorithm, that ensures no philosopher will go hungry. This means establishing a system where they can perpetually alternate between eating and thinking, all while acknowledging the unpredictable nature of when their fellow philosophers will desire to eat or engage in contemplation.
+The challenge lies in designing a behavioural framework, or a concurrent algorithm, that ensures no philosopher will go hungry. This means establishing a system where they can perpetually alternate between eating and thinking, all while acknowledging the unpredictable nature of when their fellow philosophers will desire to eat or engage in contemplation.
 
 For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
 
@@ -70,13 +70,13 @@ make
 - [x] They do it in order: `eat` -> `sleep` -> `think` (they don't really think, they wait to have their forks to eat).
 - [x] To eat they must have two forks, knowing that there is only one fork per philosopher.
 - [x] If one of them dies, the simulation stops and death must be displayed in a maximum of 10 milliseconds.
-- [x] Write each change of the philosopher status.
+- [x] Write each change of the philosopher's status.
  
 ## BONUS
 > The bonus program takes the same arguments and it as to comply with the mandatory rules.
 
 - [ ] All the forks are put in the middle of the table.
-- [ ] They have no states in memory, but the number of avaialable forks is represented by a semaphore.
+- [ ] They have no states in memory, but the number of available forks is represented by a semaphore.
 - [ ] Each philosopher should be a process, but the main process should not be a philosopher.
 
 ## TIPS
@@ -98,7 +98,7 @@ make
  
 A **thread** is a unit of execution within a process. Each **process** has at least one **thread**, but additional **threads** can be created. A **thread** consists of unique elements and shared elements with other **threads** of the same process, such as the code section, data section, and operating system resources like open files and signals.
 
-However, if two **threads** of the same process try to access the same shared memory variable simultaneously, it can lead to undefined behaviors, known as **data races**. To prevent this, **mutexes** are used. **Mutexes** block a piece of code, allowing only one **thread** at a time to execute that piece of code, similar to how a toilet key is used.
+However, if two **threads** of the same process try to access the same shared memory variable simultaneously, it can lead to undefined behaviours, known as **data races**. To prevent this, **mutexes** are used. **Mutexes** block a piece of code, allowing only one **thread** at a time to execute that piece of code, similar to how a toilet key is used.
 
 In the context of the given example:
 * Each fork has its own **mutex**, which can be locked when a philosopher takes it.
@@ -114,7 +114,7 @@ To prevent conflicts and ensure proper execution, the following strategies are e
  ft_usleep(ph->pa->eat / 10);
 ```
  
-* Each philosopher has their own fork on the left (`left_fork`) and borrows the fork from their right neighbor using a pointer (`*right_fork`) that points to the left fork of the neighbor on the right.
+* Each philosopher has their own fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
  
 ```c
 while (i < p->a.total)
@@ -122,7 +122,7 @@ while (i < p->a.total)
  p->ph[i].id = i + 1;
 pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their own fork on the left
  if (i == p->a.total - 1)
-p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbor if the philosopher is the last one
+p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
  else
 p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
  i++;
@@ -167,7 +167,7 @@ struct timeval current_time;
  time = 0;
  if (gettimeofday(&current_time, NULL) == -1)
  ft_exit("Gettimeofday returned -1\n");
- time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in millisecondes
+ time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in milliseconds
  return (time);
 }
 ```
@@ -196,7 +196,7 @@ The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to
 * `reachable` refers to a **thread** that does not destroy its memory when it finishes. The `pthread_join` function can be used to block the execution until the **thread** finishes.
  
 ## EXAMPLES
- > The performance will change if you use `-fsanitize`, `valgrind` or both togheter.
+ > The performance will change if you use `-fsanitize`, `valgrind` or both together.
  
 | Example | Expected Result |
 | :-- | :-- |
@@ -220,8 +220,8 @@ The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to
 At 42 School, it is expected that almost every project is written in accordance with the Norm, which is the coding standard of the school.
 
 ```
-- No for, do...while, switch, case, goto, ternary operators and variable lenght arrays are allowed
-- Each function must be maximum 25 lines, not counting the function's own curly brackets
+- No for, do...while, switch, case, goto, ternary operators and variable-length arrays are allowed
+- Each function must be a maximum of 25 lines, not counting the function's curly brackets
 - Each line must be at most 80 columns wide, comments included
 - A function can take 4 named parameters maximum
 - No assigns and declarations in the same line (unless static)
@@ -231,7 +231,7 @@ At 42 School, it is expected that almost every project is written in accordance 
 
 * [42 Norms](https://github.com/jotavare/jotavare/blob/main/42/pdf/en_norm.pdf) - Information about 42 code norms. `PDF`
 * [Norminette](https://github.com/42School/norminette) - Tool by 42, to respect the code norm. `GitHub`
-* [42 Header](https://github.com/42Paris/42header) - 42 header for vim. `GitHub`
+* [42 Header](https://github.com/42Paris/42header) - 42 header for Vim. `GitHub`
 
 ## LICENSE
 <p>

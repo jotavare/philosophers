@@ -89,7 +89,7 @@ make
 | [arg2] | time_to_die                               | If he hasn't eaten for time_to_die milliseconds he dies. |
 | [arg3] | time_to_eat                               | Time to eat with two forks in milliseconds.              |
 | [arg4] | time_to_sleep                             | Time to sleep in milliseconds.                           |
-| [arg5] | number_of_times_each_philosopher_must_eat | Number of times each philosopher must eat.               |
+| [arg5] | number_of_times_each_philosopher_must_eat | Number of times each philosopher must eat. (Optional)    |
 
 #  Step 2: Getting familiar with threads and mutexes
  

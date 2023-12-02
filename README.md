@@ -26,7 +26,7 @@
 ## ABOUT
 Five philosophers reside in a house, sharing a dining table with a special spaghetti dish requiring two forks, one between each plate. To eat, a philosopher needs both left and right forks, which depend on neighbours' activities. They alternate between contemplating and dining, setting down both forks after a meal.
 
-The challenge I had to do lies in devising an algorithmic system ensuring no philosopher goes hungry, navigating the unpredictable nature of when others will dine or ruminate, all while perpetually balancing eating and thoughtful pursuits.
+The challenge I had, was to figure out how to make sure no philosopher goes hungry while dealing with the unpredictability of when others want to eat or think. It's like trying to create a system that keeps everyone fed without knowing when they'll be hungry or lost in thought.
 
 For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
 
@@ -92,7 +92,7 @@ make
 | [arg4] | `time_to_sleep`                             | Time to sleep in milliseconds.                           |
 | [arg5] | `number_of_times_each_philosopher_must_eat` | Number of times each philosopher must eat. (Optional)    |
 
-##### THREADS AND MUTEXES
+#### THREADS AND MUTEXES
  
 A **thread** is a unit of execution within a process. Each **process** has at least one **thread**, but additional **threads** can be created. A **thread** consists of unique elements and shared elements with other **threads** of the same process, such as the code section, data section, and operating system resources like open files and signals.
 
@@ -103,16 +103,16 @@ In the context of the given example:
 * There is also a **mutex** shared by all the philosophers, ensuring that text is printed without mixing.
 
 #### STRATEGY
+>To prevent conflicts and ensure proper execution, the following strategies are employed:
 
-To prevent conflicts and ensure proper execution, the following strategies are employed:
-* **Make even or odd philosophers start with a delay.** If all philosophers start at the same time and take their right fork, none of them will be able to eat.
+Make even or odd philosophers start with a delay.** If all philosophers start at the same time and take their right fork, none of them will be able to eat.
 
 ```c
  if (ph->id % 2 == 0)
  ft_usleep(ph->pa->eat / 10);
 ```
  
-* Each philosopher has their fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
+Each philosopher has their fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
  
 ```c
 while (i < p->a.total)
@@ -127,7 +127,7 @@ p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right
 }
 ```
  
-* Death checking is performed in a separate **thread** to ensure timely detection. If the main **thread** continuously checks for death, it can significantly impact performance. So, when a philosopher performs their activities, a separate **thread** is launched to check if any philosopher has died. This **thread** sleeps for the duration specified by `time_to_die` and then checks if the philosopher is still alive.
+Death checking is performed in a separate **thread** to ensure timely detection. If the main **thread** continuously checks for death, it can significantly impact performance. So, when a philosopher performs their activities, a separate **thread** is launched to check if any philosopher has died. This **thread** sleeps for the duration specified by `time_to_die` and then checks if the philosopher is still alive.
  
 ```c
 pthread_create(&ph->thread_death_id, NULL, is_dead, data);
@@ -142,21 +142,21 @@ void *is_dead(void *data)
 ```
  
 #### TIME MANAGEMENT
+> Time can be managed using the following conversions:
 
-Time can be managed using the following conversions:
 | Second | Millisecond | Microsecond |
 | :-- | :-- | :-- |
 | 1     | 1000 | 1e+6 |
 | 0.001 | 1    | 1000 |
  
-* The `gettimeofday` function is used to get the current time, which is stored in a timeval structure. The following example demonstrates how `gettimeofday` works:
+The `gettimeofday` function is used to get the current time, which is stored in a timeval structure. The following example demonstrates how `gettimeofday` works:
 ```c
  struct timeval current_time;
  gettimeofday(&current_time, NULL);
  printf("seconds : %ld\nmicro seconds : %d", current_time.tv_sec, current_time.tv_usec);
 ```
  
-* To get the current time in milliseconds using `gettimeofday`, the following function can be used:
+To get the current time in milliseconds using `gettimeofday`, the following function can be used:
 ```c
 long int actual_time(void)
 {
@@ -170,7 +170,7 @@ struct timeval current_time;
 }
 ```
  
-* A custom `ft_usleep` function is created to provide more precise control over the sleep time compared to the actual `usleep` function, which waits at least the specified time. The custom function repeatedly checks the time difference until the desired time has passed.
+A custom `ft_usleep` function is created to provide more precise control over the sleep time compared to the actual `usleep` function, which waits at least the specified time. The custom function repeatedly checks the time difference until the desired time has passed.
 ```c
 void ft_usleep(long int time_in_ms)
 {
@@ -190,11 +190,11 @@ To fix **data races**, the option `-g fsanitize=thread` can be used.
 
 The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to detect any missing or misused **mutexes**. Warnings or errors from these tools indicate potential issues that should be manually checked. Such issues are often signs of a problematic project, even if it appears to be working.
 
-* `detached` refers to a **thread** that cleans its memory as soon as it finishes. It is essential to ensure that the main **thread** does not terminate before the detached **thread** completes its execution.
-* `reachable` refers to a **thread** that does not destroy its memory when it finishes. The `pthread_join` function can be used to block the execution until the **thread** finishes.
+- `detached` refers to a **thread** that cleans its memory as soon as it finishes. It is essential to ensure that the main **thread** does not terminate before the detached **thread** completes its execution.
+- `reachable` refers to a **thread** that does not destroy its memory when it finishes. The `pthread_join` function can be used to block the execution until the **thread** finishes.
  
 ## EXAMPLES
- > The performance will change if you use `-fsanitize`, `valgrind` or both together.
+> The performance will change if you use `-fsanitize` and `valgrind` or both together.
  
 | Example | Expected Result |
 | :-- | :-- |

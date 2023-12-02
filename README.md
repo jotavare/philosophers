@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/jotavare/jotavare/blob/main/42/banner/new/42_philosophers_banner_new.png">
+  <img src="https://github.com/jotavare/jotavare/blob/main/42/banners/piscine_and_common_core/github_piscine_and_common_core_banner_philosophers.png">
 </p>
 
 <p align="center">
@@ -67,7 +67,7 @@ make
 > Objective: can't kill the philosophers.
  
 - [x] Each philosopher is a **thread** and each fork is a **mutex**.
-- [x] They do it in order: `eat` -> `sleep` -> `think` (they don't really think, they wait to have their forks to eat).
+- [x] They do it in order: `eat` -> `sleep` -> `think` (they don't think, they wait to have their forks to eat).
 - [x] To eat they must have two forks, knowing that there is only one fork per philosopher.
 - [x] If one of them dies, the simulation stops and death must be displayed in a maximum of 10 milliseconds.
 - [x] Write each change of the philosopher's status.
@@ -114,13 +114,13 @@ To prevent conflicts and ensure proper execution, the following strategies are e
  ft_usleep(ph->pa->eat / 10);
 ```
  
-* Each philosopher has their own fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
+* Each philosopher has their fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
  
 ```c
 while (i < p->a.total)
 {
  p->ph[i].id = i + 1;
-pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their own fork on the left
+pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their fork on the left
  if (i == p->a.total - 1)
 p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
  else
@@ -186,7 +186,7 @@ void ft_usleep(long int time_in_ms)
  
 #### DATA RACES
 
-A **data race** occurs when two or more **threads** within a single process concurrently access the same memory location, with at least one of the accesses being a write operation, and no exclusive locks are used to control the accesses. **Data races** can lead to non-deterministic order of accesses and produce different results from run to run. While some **data races** may be harmless, many are bugs in the program.
+A **data race** occurs when two or more **threads** within a single process concurrently access the same memory location, with at least one of the accesses being a write operation, and no exclusive locks are used to control the accesses. **Data races** can lead to a non-deterministic order of accesses and produce different results from run to run. While some **data races** may be harmless, many are bugs in the program.
 
 To fix **data races**, the option `-g fsanitize=thread` can be used.
 
@@ -217,23 +217,23 @@ The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to
 | `./philo 3 610 200 80`            | No philosopher dies.                                           |
  
 ## NORMINETTE
-At 42 School, it is expected that almost every project is written in accordance with the Norm, which is the coding standard of the school.
+> At 42 School, it is expected that almost every project is written following the Norm, which is the coding standard of the school.
 
 ```
-- No for, do...while, switch, case, goto, ternary operators and variable-length arrays are allowed
-- Each function must be a maximum of 25 lines, not counting the function's curly brackets
-- Each line must be at most 80 columns wide, comments included
-- A function can take 4 named parameters maximum
-- No assigns and declarations in the same line (unless static)
-- You can't declare more than 5 variables per function
+- No for, do...while, switch, case, goto, ternary operators, or variable-length arrays allowed;
+- Each function must be a maximum of 25 lines, not counting the function's curly brackets;
+- Each line must be at most 80 columns wide, with comments included;
+- A function can take 4 named parameters maximum;
+- No assigns and declarations in the same line (unless static);
+- You can't declare more than 5 variables per function;
 - ...
 ```
 
-* [42 Norms](https://github.com/jotavare/jotavare/blob/main/42/pdf/en_norm.pdf) - Information about 42 code norms. `PDF`
-* [Norminette](https://github.com/42School/norminette) - Tool by 42, to respect the code norm. `GitHub`
+* [42 Norms](https://github.com/42School/norminette/blob/master/pdf/en.norm.pdf) - Information about 42 code norms. `PDF`
+* [Norminette](https://github.com/42School/norminette) - Tool to respect the code norm, made by 42. `GitHub`
 * [42 Header](https://github.com/42Paris/42header) - 42 header for Vim. `GitHub`
 
 ## LICENSE
 <p>
-This work is published under the terms of <a href="https://github.com/jotavare/jotavare/blob/main/LICENSE">42 Unlicense</a>.
+This work is published under the terms of <a href="https://github.com/jotavare/philosophers/blob/main/LICENSE">Unlicense</a>.
 </p>

@@ -24,11 +24,9 @@
 </p>
 
 ## ABOUT
-In a house, five philosophers reside and gather around a shared dining table. Each philosopher has a designated place at the table where they dine. Their primary concern, apart from their philosophical pursuits, revolves around a particular dish of spaghetti that requires the use of two forks. There is a fork placed between each plate on the table.
+Five philosophers reside in a house, sharing a dining table with a special spaghetti dish requiring two forks, one between each plate. To eat, a philosopher needs both left and right forks, which depend on neighbours' activities. They alternate between contemplating and dining, setting down both forks after a meal.
 
-The philosophers follow a rhythm of alternating between deep contemplation and enjoying their meal. However, they face a condition before they can commence eating: they must have both a left and right fork at their disposal. The availability of two forks is contingent upon their adjacent neighbours being engaged in contemplation rather than dining. Once a philosopher finishes their meal, they will set down both forks.
-
-The challenge lies in designing a behavioural framework, or a concurrent algorithm, that ensures no philosopher will go hungry. This means establishing a system where they can perpetually alternate between eating and thinking, all while acknowledging the unpredictable nature of when their fellow philosophers will desire to eat or engage in contemplation.
+The challenge I had to do lies in devising an algorithmic system ensuring no philosopher goes hungry, navigating the unpredictable nature of when others will dine or ruminate, all while perpetually balancing eating and thoughtful pursuits.
 
 For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
 

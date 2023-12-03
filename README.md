@@ -113,11 +113,14 @@ Each philosopher has their fork on the left (`left_fork`) and borrows the fork f
 while (i < p->a.total)
 {
   p->ph[i].id = i + 1;
-  pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their fork on the left
+  // Each philosopher has their fork on the left
+  pthread_mutex_init(&p->ph[i].left_fork, NULL);
   if (i == p->a.total - 1)
-    p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
+    // Borrow the fork from the right neighbour if the philosopher is the last one
+    p->ph[i].right_fork = &p->ph[0].left_fork;
   else
-    p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
+    // Borrow the fork from the right neighbor
+    p->ph[i].right_fork = &p->ph[i + 1].left_fork;
   i++;
 }
 ```
@@ -158,7 +161,8 @@ long int actual_time(void)
   time = 0;
   if (gettimeofday(&current_time, NULL) == -1)
     ft_exit("Gettimeofday returned -1\n");
-  time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in milliseconds
+  //time in milliseconds
+  time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
   return (time);
 }
 ```

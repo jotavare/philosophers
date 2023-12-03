@@ -52,7 +52,6 @@ make
 ```
 
 #### MAKEFILE RULES
-
 `make` or `make all` - Compile philosophers **mandatory** files.
 
 `make clean` - Delete all .o (object files) files.
@@ -63,7 +62,6 @@ make
 
 ## MANDATORY
 > Objective: can't kill the philosophers.
- 
 - [x] Each philosopher is a **thread** and each fork is a **mutex**.
 - [x] They do it in order: `eat` -> `sleep` -> `think` (they don't think, they wait to have their forks to eat).
 - [x] To eat they must have two forks, knowing that there is only one fork per philosopher.
@@ -72,7 +70,6 @@ make
  
 ## BONUS
 > The bonus program takes the same arguments and it as to comply with the mandatory rules.
-
 - [ ] All the forks are put in the middle of the table.
 - [ ] They have no states in memory, but the number of available forks is represented by a semaphore.
 - [ ] Each philosopher should be a process, but the main process should not be a philosopher.
@@ -92,7 +89,6 @@ make
 | [arg5] | `number_of_times_each_philosopher_must_eat` | Number of times each philosopher must eat. (Optional)    |
 
 #### THREADS AND MUTEXES
- 
 A **thread** is a unit of execution within a process. Each **process** has at least one **thread**, but additional **threads** can be created. A **thread** consists of unique elements and shared elements with other **threads** of the same process, such as the code section, data section, and operating system resources like open files and signals.
 
 However, if two **threads** of the same process try to access the same shared memory variable simultaneously, it can lead to undefined behaviours, known as **data races**. To prevent this, **mutexes** are used. **Mutexes** block a piece of code, allowing only one **thread** at a time to execute that piece of code, similar to how a toilet key is used.
@@ -107,8 +103,8 @@ In the context of the given example:
 Make even or odd philosophers start with a delay.** If all philosophers start at the same time and take their right fork, none of them will be able to eat.
 
 ```c
- if (ph->id % 2 == 0)
- ft_usleep(ph->pa->eat / 10);
+if (ph->id % 2 == 0)
+	ft_usleep(ph->pa->eat / 10);
 ```
  
 Each philosopher has their fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
@@ -116,13 +112,13 @@ Each philosopher has their fork on the left (`left_fork`) and borrows the fork f
 ```c
 while (i < p->a.total)
 {
- p->ph[i].id = i + 1;
-pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their fork on the left
- if (i == p->a.total - 1)
-p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
- else
-p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
- i++;
+	p->ph[i].id = i + 1;
+	pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their fork on the left
+	if (i == p->a.total - 1)
+		p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
+	else
+		p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
+	i++;
 }
 ```
  
@@ -132,12 +128,10 @@ Death checking is performed in a separate **thread** to ensure timely detection.
 pthread_create(&ph->thread_death_id, NULL, is_dead, data);
 void *is_dead(void *data)
 {
-  ft_usleep(ph->pa->die + 1);
-  if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) >= (long)(ph->pa->die)))
-  {
-    // The philosopher is dead
-  }
-}
+	ft_usleep(ph->pa->die + 1);
+	if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) >= (long)(ph->pa->die)))
+{
+// The philosopher is dead
 ```
  
 #### TIME MANAGEMENT
@@ -150,22 +144,22 @@ void *is_dead(void *data)
  
 The `gettimeofday` function is used to get the current time, which is stored in a timeval structure. The following example demonstrates how `gettimeofday` works:
 ```c
- struct timeval current_time;
- gettimeofday(&current_time, NULL);
- printf("seconds : %ld\nmicro seconds : %d", current_time.tv_sec, current_time.tv_usec);
+struct timeval current_time;
+gettimeofday(&current_time, NULL);
+printf("seconds : %ld\nmicro seconds : %d", current_time.tv_sec, current_time.tv_usec);
 ```
  
 To get the current time in milliseconds using `gettimeofday`, the following function can be used:
 ```c
 long int actual_time(void)
 {
- long int time;
-struct timeval current_time;
- time = 0;
- if (gettimeofday(&current_time, NULL) == -1)
- ft_exit("Gettimeofday returned -1\n");
- time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in milliseconds
- return (time);
+	long int time;
+	struct timeval current_time;
+	time = 0;
+	if (gettimeofday(&current_time, NULL) == -1)
+		ft_exit("Gettimeofday returned -1\n");
+	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in milliseconds
+	return (time);
 }
 ```
  
@@ -173,16 +167,15 @@ A custom `ft_usleep` function is created to provide more precise control over th
 ```c
 void ft_usleep(long int time_in_ms)
 {
- long int start_time;
- start_time = 0;
- start_time = actual_time();
- while ((actual_time() - start_time) < time_in_ms)
- usleep(time_in_ms / 10);
+	long int start_time;
+	start_time = 0;
+	start_time = actual_time();
+	while ((actual_time() - start_time) < time_in_ms)
+	usleep(time_in_ms / 10);
 }
 ````
  
 #### DATA RACES
-
 A **data race** occurs when two or more **threads** within a single process concurrently access the same memory location, with at least one of the accesses being a write operation, and no exclusive locks are used to control the accesses. **Data races** can lead to a non-deterministic order of accesses and produce different results from run to run. While some **data races** may be harmless, many are bugs in the program.
 
 To fix **data races**, the option `-g fsanitize=thread` can be used.

@@ -17,7 +17,7 @@
 	<a href="#how-to-use">How to use</a> •
 	<a href="#mandatory">Mandatory</a> •
 	<a href="#bonus">Bonus</a> •
-	<a href="#understanding-the-subject">Understanding the Subject</a> •
+	<a href="#philosophers">Philosophers</a> •
 	<a href="#examples">Examples</a> •
 	<a href="#norminette">Norminette</a> •
 	<a href="#license">License</a>
@@ -74,7 +74,7 @@ make
 - [ ] They have no states in memory, but the number of available forks is represented by a semaphore.
 - [ ] Each philosopher should be a process, but the main process should not be a philosopher.
 
-## UNDERSTANDING THE SUBJECT
+## PHILOSOPHERS
 
 ```bash
 ./philo [arg1] [arg2] [arg3] [arg4] [arg5]

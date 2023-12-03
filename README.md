@@ -104,7 +104,7 @@ Make even or odd philosophers start with a delay.** If all philosophers start at
 
 ```c
 if (ph->id % 2 == 0)
-	ft_usleep(ph->pa->eat / 10);
+  ft_usleep(ph->pa->eat / 10);
 ```
  
 Each philosopher has their fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
@@ -112,13 +112,13 @@ Each philosopher has their fork on the left (`left_fork`) and borrows the fork f
 ```c
 while (i < p->a.total)
 {
-	p->ph[i].id = i + 1;
-	pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their fork on the left
-	if (i == p->a.total - 1)
-		p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
-	else
-		p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
-	i++;
+  p->ph[i].id = i + 1;
+  pthread_mutex_init(&p->ph[i].left_fork, NULL); // Each philosopher has their fork on the left
+  if (i == p->a.total - 1)
+    p->ph[i].right_fork = &p->ph[0].left_fork; // Borrow the fork from the right neighbour if the philosopher is the last one
+  else
+    p->ph[i].right_fork = &p->ph[i + 1].left_fork; // Borrow the fork from the right neighbor
+  i++;
 }
 ```
  
@@ -128,8 +128,8 @@ Death checking is performed in a separate **thread** to ensure timely detection.
 pthread_create(&ph->thread_death_id, NULL, is_dead, data);
 void *is_dead(void *data)
 {
-	ft_usleep(ph->pa->die + 1);
-	if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) >= (long)(ph->pa->die)))
+  ft_usleep(ph->pa->die + 1);
+  if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) >= (long)(ph->pa->die)))
 {
 // The philosopher is dead
 ```
@@ -153,13 +153,13 @@ To get the current time in milliseconds using `gettimeofday`, the following func
 ```c
 long int actual_time(void)
 {
-	long int time;
-	struct timeval current_time;
-	time = 0;
-	if (gettimeofday(&current_time, NULL) == -1)
-		ft_exit("Gettimeofday returned -1\n");
-	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in milliseconds
-	return (time);
+  long int time;
+  struct timeval current_time;
+  time = 0;
+  if (gettimeofday(&current_time, NULL) == -1)
+    ft_exit("Gettimeofday returned -1\n");
+  time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //time in milliseconds
+  return (time);
 }
 ```
  
@@ -167,11 +167,11 @@ A custom `ft_usleep` function is created to provide more precise control over th
 ```c
 void ft_usleep(long int time_in_ms)
 {
-	long int start_time;
-	start_time = 0;
-	start_time = actual_time();
-	while ((actual_time() - start_time) < time_in_ms)
-	usleep(time_in_ms / 10);
+  long int start_time;
+  start_time = 0;
+  start_time = actual_time();
+  while ((actual_time() - start_time) < time_in_ms)
+    usleep(time_in_ms / 10);
 }
 ````
  

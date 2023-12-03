@@ -30,7 +30,8 @@ The challenge I had, was to figure out how to make sure no philosopher goes hung
 
 For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
 
-<a href="https://github.com/jotavare/philosophers/blob/master/subject/en_subject_philosophers.pdf">Click here</a> for the subject of this project.
+- [Subject](https://github.com/jotavare/philosophers/blob/master/subject/en_subject_philosophers.pdf) `PDF`
+- [References](https://github.com/jotavare/42-resources#03-philosophers) `GitHub`
 
 ## HOW TO USE
 #### 1º - Clone the repository

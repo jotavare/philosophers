@@ -8,7 +8,7 @@
 	<img src="https://img.shields.io/badge/score-100%20%2F%20100-success?color=%2312bab9&style=flat-square"/>
 	<img src="https://img.shields.io/github/languages/top/jotavare/philosophers?color=%2312bab9&style=flat-square"/>
 	<img src="https://img.shields.io/github/last-commit/jotavare/philosophers?color=%2312bab9&style=flat-square"/>
-	<a href='https://www.linkedin.com/in/joaoptoliveira' target="_blank"><img alt='Linkedin' src='https://img.shields.io/badge/LinkedIn-100000?style=flat-square&logo=Linkedin&logoColor=white&labelColor=0A66C2&color=0A66C2'/></a>
+	<a href='https://www.linkedin.com/in/jotavare' target="_blank"><img alt='Linkedin' src='https://img.shields.io/badge/LinkedIn-blue?style=flat-square'/></a>
 	<a href='https://profile.intra.42.fr/users/jotavare' target="_blank"><img alt='42' src='https://img.shields.io/badge/Porto-100000?style=flat-square&logo=42&logoColor=white&labelColor=000000&color=000000'/></a>
 </p>
 
@@ -30,9 +30,6 @@ Five philosophers reside in a house, sharing a dining table with a special spagh
 The challenge I had, was to figure out how to make sure no philosopher goes hungry while dealing with the unpredictability of when others want to eat or think. It's like trying to create a system that keeps everyone fed without knowing when they'll be hungry or lost in thought.
 
 For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
-
-- [Subject](https://github.com/jotavare/philosophers/blob/master/subject/en_subject_philosophers.pdf) `PDF`
-- [References](https://github.com/jotavare/42-resources#03-philosophers) `GitHub`
 
 ## HOW TO USE
 #### 1º - Clone the repository

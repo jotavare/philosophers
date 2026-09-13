@@ -42,6 +42,7 @@ typedef struct s_stats
 	int						meals;
 	int						number_philos_ate;
 	int						stop;
+	int						monitors;
 	long int				start_t;
 	pthread_mutex_t			write_mutex;
 	pthread_mutex_t			dead_mutex;
@@ -87,6 +88,7 @@ void	simulation(t_philo *ph);
 
 // threads.c
 void	*is_dead(void	*data);
+void	count_monitor(t_philo *ph, int delta);
 void	*thread(void *data);
 int		threading(t_p *p);
 

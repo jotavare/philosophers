@@ -35,6 +35,27 @@ int	check_death(t_philo *ph, int i)
 	Checks if the philosopher has eaten the required amount of times.
 */
 
+/*
+	Blocks until every detached death-monitor thread has returned. They
+	dereference the philosopher array, so freeing it while one is still
+	sleeping is a use-after-free.
+*/
+
+static void	wait_monitors(t_p *p)
+{
+	int	live;
+
+	live = 1;
+	while (live)
+	{
+		pthread_mutex_lock(&p->a.dead_mutex);
+		live = p->a.monitors;
+		pthread_mutex_unlock(&p->a.dead_mutex);
+		if (live)
+			ft_usleep(1);
+	}
+}
+
 void	stop(t_p *p)
 {
 	int	i;
@@ -52,7 +73,11 @@ void	stop(t_p *p)
 	{
 		pthread_mutex_destroy(&p->ph[i].left_fork);
 	}
-	if (p->a.stop == 2)
+	wait_monitors(p);
+	pthread_mutex_lock(&p->a.dead_mutex);
+	i = (p->a.stop == 2);
+	pthread_mutex_unlock(&p->a.dead_mutex);
+	if (i)
 		printf(GREEN"Each philosopher ate %d time(s)\n"CLEAR, p->a.meals);
 	free(p->ph);
 }

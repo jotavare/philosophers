@@ -27,6 +27,7 @@ int	initialize(t_p *p)
 	i = 0;
 	p->a.start_t = actual_time();
 	p->a.stop = 0;
+	p->a.monitors = 0;
 	p->a.number_philos_ate = 0;
 	init_mutex(p);
 	while (i < p->a.philos)

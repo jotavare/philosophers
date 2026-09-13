@@ -11,13 +11,14 @@
 # **************************************************************************** #
 
 # BASIC
-CC = cc -g -pthread
+CC = cc -pthread
 CFLAGS = -Wall -Wextra -Werror
+DEBUG =
 RM = rm -rf
 GDB = gdb
 
 # TESTING
-VAL = valgrind --leak-check=full --track-origin=yes
+VAL = valgrind --leak-check=full --track-origins=yes
 SANITIZE_THREAD = -fsanitize=thread
 SANITIZE_ADDRESS = -fsanitize=address
 HELGRIND = valgrind --tool=helgrind
@@ -57,11 +58,11 @@ $(NAME): $(OBJS)
 	
 $(OBJSDIR)/%.o: %.c
 	mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@
 
 philo: $(PHILO_OBJ) $(NAME)
 	@echo "$(GREEN)$(BOLD)Creating executable...$(RESET)"
-	$(CC) $(CFLAGS) $(PHILO_OBJ) $(NAME) -o philo
+	$(CC) $(CFLAGS) $(DEBUG) $(PHILO_OBJ) $(NAME) -o philo
 	@echo "$(GREEN)$(BOLD)Executable created!$(RESET)"
 
 clean:
@@ -76,5 +77,13 @@ fclean: clean
 
 re: fclean all
 	@echo "$(GREEN)$(BOLD)Recompiled successfully!$(RESET)"
+
+debug: fclean
+	@$(MAKE) DEBUG="-g3 -fsanitize=address" all
+
+thread: fclean
+	@$(MAKE) DEBUG="-g3 -fsanitize=thread" all
+
+.PHONY: all clean fclean re debug thread
 
 .SILENT:

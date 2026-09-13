@@ -17,26 +17,41 @@
 	if so, prints a message indicating that the philosopher has died.
 */
 
+/*
+	Tracks how many death-monitor threads are alive. They are detached, so
+	nothing joins them; stop() waits for this count to reach zero before
+	freeing the philosopher array, otherwise a monitor waking from its
+	sleep dereferences memory that main has already released.
+*/
+
+void	count_monitor(t_philo *ph, int delta)
+{
+	pthread_mutex_lock(&ph->pa->dead_mutex);
+	ph->pa->monitors += delta;
+	pthread_mutex_unlock(&ph->pa->dead_mutex);
+}
+
 void	*is_dead(void	*data)
 {
 	t_philo					*ph;
+	int						starved;
 
 	ph = (t_philo *)data;
 	ft_usleep(ph->pa->time_to_die);
 	pthread_mutex_lock(&ph->pa->time_eat_mutex);
 	pthread_mutex_lock(&ph->pa->finish_mutex);
-	if (!check_death(ph, 0) && !ph->finish && ((actual_time() - ph->ms_eat) \
-		>= (long)(ph->pa->time_to_die)))
+	starved = (!check_death(ph, 0) && !ph->finish
+			&& ((actual_time() - ph->ms_eat) >= (long)(ph->pa->time_to_die)));
+	pthread_mutex_unlock(&ph->pa->finish_mutex);
+	pthread_mutex_unlock(&ph->pa->time_eat_mutex);
+	if (starved)
 	{
-		pthread_mutex_unlock(&ph->pa->time_eat_mutex);
-		pthread_mutex_unlock(&ph->pa->finish_mutex);
 		pthread_mutex_lock(&ph->pa->write_mutex);
 		print_status(RED"died\n"CLEAR, ph);
 		pthread_mutex_unlock(&ph->pa->write_mutex);
 		check_death(ph, 1);
 	}
-	pthread_mutex_unlock(&ph->pa->time_eat_mutex);
-	pthread_mutex_unlock(&ph->pa->finish_mutex);
+	count_monitor(ph, -1);
 	return (NULL);
 }
 
@@ -50,29 +65,29 @@ void	*is_dead(void	*data)
 void	*thread(void *data)
 {
 	t_philo					*ph;
+	int						all_ate;
 
 	ph = (t_philo *)data;
 	if (ph->id % 2 == 0)
 		ft_usleep(ph->pa->time_to_eat / 10);
 	while (!check_death(ph, 0))
 	{
+		count_monitor(ph, 1);
 		pthread_create(&ph->thread_death_id, NULL, is_dead, data);
+		pthread_detach(ph->thread_death_id);
 		simulation(ph);
 		if ((int)++ph->nb_philo_ate == ph->pa->meals)
 		{
 			pthread_mutex_lock(&ph->pa->finish_mutex);
 			ph->finish = 1;
 			ph->pa->number_philos_ate++;
-			if (ph->pa->number_philos_ate == ph->pa->philos)
-			{
-				pthread_mutex_unlock(&ph->pa->finish_mutex);
-				check_death(ph, 2);
-			}
+			all_ate = (ph->pa->number_philos_ate == ph->pa->philos);
 			pthread_mutex_unlock(&ph->pa->finish_mutex);
+			if (all_ate)
+				check_death(ph, 2);
 			return (NULL);
 		}
 	}
-	pthread_join(ph->thread_death_id, NULL);
 	return (NULL);
 }
 

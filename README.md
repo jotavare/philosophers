@@ -20,6 +20,7 @@
 	<a href="#philosophers">Philosophers</a> •
 	<a href="#examples">Examples</a> •
 	<a href="#norminette">Norminette</a> •
+	<a href="#debugging">Debugging</a> •
 	<a href="#contributing">Contributing</a> •
 	<a href="#license">License</a>
 </p>
@@ -30,6 +31,9 @@ Five philosophers reside in a house, sharing a dining table with a special spagh
 The challenge I had, was to figure out how to make sure no philosopher goes hungry while dealing with the unpredictability of when others want to eat or think. It's like trying to create a system that keeps everyone fed without knowing when they'll be hungry or lost in thought.
 
 For further exploration of this problem, you can consult the <a href="https://en.wikipedia.org/wiki/Dining_philosophers_problem">Wikipedia</a> article.
+
+> [!NOTE]
+> For the rest of the projects and exams in the cursus, <a href="https://github.com/jotavare/42-common-core">click here</a>.
 
 ## HOW TO USE
 #### 1º - Clone the repository
@@ -57,6 +61,10 @@ make
 `make fclean` - Delete all .o (object file) and .a (executable) files.
 
 `make re` - Use rules `fclean` + `all`.
+
+`make debug` - Rebuild with `-g3 -fsanitize=address`.
+
+`make thread` - Rebuild with `-g3 -fsanitize=thread`.
 
 ## MANDATORY
 > Objective: can't kill the philosophers.
@@ -225,10 +233,34 @@ The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to
 * [Norminette](https://github.com/42School/norminette) - Tool to respect the code norm, made by 42. `GitHub`
 * [42 Header](https://github.com/42Paris/42header) - 42 header for Vim. `GitHub`
 
+## DEBUGGING
+> Every philosopher is a thread and every fork a mutex, so the failures that
+> matter here are races and deadlocks rather than leaks.
+
+```bash
+make thread   # -fsanitize=thread, reports races and lock-order inversions
+make debug    # -fsanitize=address, reports leaks and invalid accesses
+```
+
+`gdb --args ./philo 4 410 200 200` - Step through a single philosopher. Use `set scheduler-locking on` to stop the other threads while inspecting one.
+
+`valgrind --tool=helgrind ./philo 4 410 200 200` - Second opinion on lock ordering.
+
+> [!NOTE]
+> ThreadSanitizer reports one lock-order inversion, which is expected and
+> documented above `simulation()`. Every philosopher takes the left fork
+> before the right, which is a circular wait on paper; the even-numbered
+> philosophers are staggered at startup so the ring never closes. Reordering
+> the forks removes the warning but starves a philosopher, which is worse.
+
+* [GDB](https://www.sourceware.org/gdb/) - The GNU debugger. `Website`
+* [Valgrind](https://valgrind.org/docs/manual/quick-start.html) - Quick start guide. `Website`
+
 ## CONTRIBUTING
 
-If you find any issues or have suggestions for improvements, feel free to fork the repository and open an issue or submit a pull request.
+This repository documents work already submitted and graded, so it is not open
+to changes. Feel free to fork it if any of it is useful to you.
 
 ## LICENSE
 
-This project is available under the MIT License. For further details, please refer to the [LICENSE](https://github.com/jotavare/philosophers/blob/master/LICENSE) file.
+This project is available under the MIT License. For further details, please refer to the [LICENSE](https://github.com/jotavare/philosophers/blob/main/LICENSE) file.

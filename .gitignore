@@ -1,3 +1,22 @@
+# Build output.
+*.o
+*.a
 *.out
-*.pdf
+philo/objects/
+philo/philo
+
+# Editor and OS droppings.
+.vscode/
+.idea/
 *.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Never commit credentials.
+.env
+.env.*
+*.pem
+*.key
+
+*.pdf

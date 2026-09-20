@@ -22,12 +22,12 @@ For further exploration of this problem, you can consult the <a href="https://en
 ## HOW TO USE
 #### 1º - Clone the repository
 ```bash
-git clone git@github.com:jotavare/philosophers.git
+git clone https://github.com/jotavare/philosophers.git
 ```
 
 #### 2º - Enter the project folder and run `make`
 ```bash
-cd philosophers/philosophers
+cd philosophers/philo
 make
 ```
 

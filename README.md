@@ -3,26 +3,10 @@
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/status-finished-success?color=%2312bab9&style=flat-square"/>
 	<img src="https://img.shields.io/badge/evaluated-18%20%2F%2012%20%2F%202022-success?color=%2312bab9&style=flat-square"/>
 	<img src="https://img.shields.io/badge/score-100%20%2F%20100-success?color=%2312bab9&style=flat-square"/>
-	<img src="https://img.shields.io/github/languages/top/jotavare/philosophers?color=%2312bab9&style=flat-square"/>
-	<img src="https://img.shields.io/github/last-commit/jotavare/philosophers?color=%2312bab9&style=flat-square"/>
-	<a href='https://www.linkedin.com/in/jotavare' target="_blank"><img alt='Linkedin' src='https://img.shields.io/badge/LinkedIn-blue?style=flat-square'/></a>
+	<a href='https://www.linkedin.com/in/jotavare' target="_blank"><img alt='Linkedin' src='https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=data:image/svg%2bxml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+TGlua2VkSW48L3RpdGxlPjxwYXRoIGZpbGw9IndoaXRlIiBkPSJNMjAuNDQ3IDIwLjQ1MmgtMy41NTR2LTUuNTY5YzAtMS4zMjgtLjAyNy0zLjAzNy0xLjg1Mi0zLjAzNy0xLjg1MyAwLTIuMTM2IDEuNDQ1LTIuMTM2IDIuOTM5djUuNjY3SDkuMzUxVjloMy40MTR2MS41NjFoLjA0NmMuNDc3LS45IDEuNjM3LTEuODUgMy4zNy0xLjg1IDMuNjAxIDAgNC4yNjcgMi4zNyA0LjI2NyA1LjQ1NXY2LjI4NnpNNS4zMzcgNy40MzNjLTEuMTQ0IDAtMi4wNjMtLjkyNi0yLjA2My0yLjA2NSAwLTEuMTM4LjkyLTIuMDYzIDIuMDYzLTIuMDYzIDEuMTQgMCAyLjA2NC45MjUgMi4wNjQgMi4wNjMgMCAxLjEzOS0uOTI1IDIuMDY1LTIuMDY0IDIuMDY1em0xLjc4MiAxMy4wMTlIMy41NTVWOWgzLjU2NHYxMS40NTJ6TTIyLjIyNSAwSDEuNzcxQy43OTIgMCAwIC43NzQgMCAxLjcyOXYyMC41NDJDMCAyMy4yMjcuNzkyIDI0IDEuNzcxIDI0aDIwLjQ1MUMyMy4yIDI0IDI0IDIzLjIyNyAyNCAyMi4yNzFWMS43MjlDMjQgLjc3NCAyMy4yIDAgMjIuMjIyIDBoLjAwM3oiLz48L3N2Zz4K&logoColor=white'/></a>
 	<a href='https://profile.intra.42.fr/users/jotavare' target="_blank"><img alt='42' src='https://img.shields.io/badge/Porto-100000?style=flat-square&logo=42&logoColor=white&labelColor=000000&color=000000'/></a>
-</p>
-
-<p align="center">
-	<a href="#about">About</a> •
-	<a href="#how-to-use">How to use</a> •
-	<a href="#mandatory">Mandatory</a> •
-	<a href="#bonus">Bonus</a> •
-	<a href="#philosophers">Philosophers</a> •
-	<a href="#examples">Examples</a> •
-	<a href="#norminette">Norminette</a> •
-	<a href="#debugging">Debugging</a> •
-	<a href="#contributing">Contributing</a> •
-	<a href="#license">License</a>
 </p>
 
 ## ABOUT
@@ -73,7 +57,7 @@ make
 - [x] To eat they must have two forks, knowing that there is only one fork per philosopher.
 - [x] If one of them dies, the simulation stops and death must be displayed in a maximum of 10 milliseconds.
 - [x] Write each change of the philosopher's status.
- 
+
 ## BONUS
 > The bonus program takes the same arguments and it as to comply with the mandatory rules.
 - [ ] All the forks are put in the middle of the table.
@@ -84,7 +68,7 @@ make
 
 ```bash
 ./philo [arg1] [arg2] [arg3] [arg4] [arg5]
-``` 
+```
 
 | Arg | Function | Description |
 | :- | :- | :- |
@@ -112,9 +96,9 @@ Make even or odd philosophers start with a delay.** If all philosophers start at
 if (ph->id % 2 == 0)
   ft_usleep(ph->pa->eat / 10);
 ```
- 
+
 Each philosopher has their fork on the left (`left_fork`) and borrows the fork from their right neighbour using a pointer (`*right_fork`) that points to the left fork of the neighbour on the right.
- 
+
 ```c
 while (i < p->a.total)
 {
@@ -130,9 +114,9 @@ while (i < p->a.total)
   i++;
 }
 ```
- 
+
 Death checking is performed in a separate **thread** to ensure timely detection. If the main **thread** continuously checks for death, it can significantly impact performance. So, when a philosopher performs their activities, a separate **thread** is launched to check if any philosopher has died. This **thread** sleeps for the duration specified by `time_to_die` and then checks if the philosopher is still alive.
- 
+
 ```c
 pthread_create(&ph->thread_death_id, NULL, is_dead, data);
 void *is_dead(void *data)
@@ -142,7 +126,7 @@ void *is_dead(void *data)
 {
 // The philosopher is dead
 ```
- 
+
 #### TIME MANAGEMENT
 > Time can be managed using the following conversions:
 
@@ -150,14 +134,14 @@ void *is_dead(void *data)
 | :-- | :-- | :-- |
 | 1     | 1000 | 1e+6 |
 | 0.001 | 1    | 1000 |
- 
+
 The `gettimeofday` function is used to get the current time, which is stored in a timeval structure. The following example demonstrates how `gettimeofday` works:
 ```c
 struct timeval current_time;
 gettimeofday(&current_time, NULL);
 printf("seconds : %ld\nmicro seconds : %d", current_time.tv_sec, current_time.tv_usec);
 ```
- 
+
 To get the current time in milliseconds using `gettimeofday`, the following function can be used:
 ```c
 long int actual_time(void)
@@ -172,7 +156,7 @@ long int actual_time(void)
   return (time);
 }
 ```
- 
+
 A custom `ft_usleep` function is created to provide more precise control over the sleep time compared to the actual `usleep` function, which waits at least the specified time. The custom function repeatedly checks the time difference until the desired time has passed.
 ```c
 void ft_usleep(long int time_in_ms)
@@ -184,7 +168,7 @@ void ft_usleep(long int time_in_ms)
     usleep(time_in_ms / 10);
 }
 ````
- 
+
 #### DATA RACES
 A **data race** occurs when two or more **threads** within a single process concurrently access the same memory location, with at least one of the accesses being a write operation, and no exclusive locks are used to control the accesses. **Data races** can lead to a non-deterministic order of accesses and produce different results from run to run. While some **data races** may be harmless, many are bugs in the program.
 
@@ -194,10 +178,10 @@ The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to
 
 - `detached` refers to a **thread** that cleans its memory as soon as it finishes. It is essential to ensure that the main **thread** does not terminate before the detached **thread** completes its execution.
 - `reachable` refers to a **thread** that does not destroy its memory when it finishes. The `pthread_join` function can be used to block the execution until the **thread** finishes.
- 
+
 ## EXAMPLES
 > The performance will change if you use `-fsanitize` and `valgrind` or both together.
- 
+
 | Example | Expected Result |
 | :-- | :-- |
 | `./philo 1 200 200 200`           | Philosopher 1 takes a fork and dies after 200 ms.              |
@@ -215,7 +199,7 @@ The tools `valgrind --tool=helgrind` or `valgrind --tool=drd` can be utilized to
 | `./philo 4 200 210 200`           | A philosopher dies, it should display the death before 210 ms. |
 | `./philo 5 800 200 150`           | No philosopher dies.                                           |
 | `./philo 3 610 200 80`            | No philosopher dies.                                           |
- 
+
 ## NORMINETTE
 > At 42 School, it is expected that almost every project is written following the Norm, which is the coding standard of the school.
 
@@ -255,12 +239,3 @@ make debug    # -fsanitize=address, reports leaks and invalid accesses
 
 * [GDB](https://www.sourceware.org/gdb/) - The GNU debugger. `Website`
 * [Valgrind](https://valgrind.org/docs/manual/quick-start.html) - Quick start guide. `Website`
-
-## CONTRIBUTING
-
-This repository documents work already submitted and graded, so it is not open
-to changes. Feel free to fork it if any of it is useful to you.
-
-## LICENSE
-
-This project is available under the MIT License. For further details, please refer to the [LICENSE](https://github.com/jotavare/philosophers/blob/main/LICENSE) file.
